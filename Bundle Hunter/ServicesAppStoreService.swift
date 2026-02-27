@@ -73,7 +73,12 @@ class AppStoreService {
     }
     
     /// Look up app by ID (more accurate)
-    private func lookupApp(id: String, country: String) async {
+    func lookupById(_ id: String, country: String = "US") async {
+        isLoading = true
+        errorMessage = nil
+        
+        defer { isLoading = false }
+        
         let entity = platformFilter.entity
         let urlString = "https://itunes.apple.com/lookup?id=\(id)&country=\(country)&entity=\(entity)"
         
@@ -108,6 +113,11 @@ class AppStoreService {
             print("   Description: \(error.localizedDescription)")
             errorMessage = "Failed to fetch app information: \(error.localizedDescription)"
         }
+    }
+    
+    /// Look up app by ID (private helper for search function)
+    private func lookupApp(id: String, country: String) async {
+        await lookupById(id, country: country)
     }
     
     /// Search by app name

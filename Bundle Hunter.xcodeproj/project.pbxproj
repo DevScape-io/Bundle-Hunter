@@ -6,11 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		873445882F515E0100DB8F93 /* AWARD_WINNING_REDESIGN.md in Resources */ = {isa = PBXBuildFile; fileRef = 873445872F515E0100DB8F93 /* AWARD_WINNING_REDESIGN.md */; };
-		8734458A2F515E3D00DB8F93 /* VISUAL_COMPARISON.md in Resources */ = {isa = PBXBuildFile; fileRef = 873445892F515E3D00DB8F93 /* VISUAL_COMPARISON.md */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		873445422F50A45100DB8F93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -32,8 +27,6 @@
 		873445322F50A45000DB8F93 /* Bundle Hunter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bundle Hunter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		873445412F50A45100DB8F93 /* Bundle HunterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bundle HunterTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8734454B2F50A45100DB8F93 /* Bundle HunterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bundle HunterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		873445872F515E0100DB8F93 /* AWARD_WINNING_REDESIGN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AWARD_WINNING_REDESIGN.md; sourceTree = "<group>"; };
-		873445892F515E3D00DB8F93 /* VISUAL_COMPARISON.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = VISUAL_COMPARISON.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -86,8 +79,6 @@
 				873445442F50A45100DB8F93 /* Bundle HunterTests */,
 				8734454E2F50A45100DB8F93 /* Bundle HunterUITests */,
 				873445332F50A45000DB8F93 /* Products */,
-				873445872F515E0100DB8F93 /* AWARD_WINNING_REDESIGN.md */,
-				873445892F515E3D00DB8F93 /* VISUAL_COMPARISON.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -221,8 +212,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				873445882F515E0100DB8F93 /* AWARD_WINNING_REDESIGN.md in Resources */,
-				8734458A2F515E3D00DB8F93 /* VISUAL_COMPARISON.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

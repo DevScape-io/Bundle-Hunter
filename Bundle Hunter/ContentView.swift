@@ -371,8 +371,17 @@ struct ContentView: View {
     }
     
     private func loadFromFavorite(_ favorite: FavoriteApp) {
-        searchText = favorite.appName
-        performSearch()
+        // Directly look up the app by its track ID (more accurate than searching by name)
+        selectedApp = nil
+        
+        Task {
+            await appStoreService.lookupById(String(favorite.trackId))
+            
+            // After lookup, if we got results, select the first one
+            if let app = appStoreService.searchResults.first {
+                selectedApp = app
+            }
+        }
     }
     
     private func deleteFavorites(offsets: IndexSet) {
