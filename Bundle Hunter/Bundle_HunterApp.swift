@@ -12,7 +12,8 @@ import SwiftData
 struct Bundle_HunterApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            SearchHistory.self,
+            FavoriteApp.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -28,5 +29,50 @@ struct Bundle_HunterApp: App {
             ContentView()
         }
         .modelContainer(sharedModelContainer)
+        .windowStyle(.hiddenTitleBar)
+        .windowToolbarStyle(.unified)
+        .defaultSize(width: 1100, height: 700)
+        .commands {
+            CommandGroup(replacing: .newItem) {
+                // Remove default New command
+            }
+            
+            CommandMenu("Search") {
+                Button("Focus Search Field") {
+                    // This would be handled by the ContentView
+                }
+                .keyboardShortcut("f", modifiers: .command)
+                
+                Divider()
+                
+                Button("Clear Search Results") {
+                    NotificationCenter.default.post(name: .clearSearchResults, object: nil)
+                }
+                .keyboardShortcut("k", modifiers: [.command, .shift])
+            }
+            
+            CommandMenu("History") {
+                Button("Show History") {
+                    NotificationCenter.default.post(name: .showHistory, object: nil)
+                }
+                .keyboardShortcut("h", modifiers: [.command, .shift])
+                
+                Button("Clear History") {
+                    NotificationCenter.default.post(name: .clearHistory, object: nil)
+                }
+                .keyboardShortcut(.delete, modifiers: [.command, .option])
+            }
+        }
+        
+        Settings {
+            SettingsView()
+        }
     }
 }
+// Notification names for menu commands
+extension Notification.Name {
+    static let clearSearchResults = Notification.Name("clearSearchResults")
+    static let showHistory = Notification.Name("showHistory")
+    static let clearHistory = Notification.Name("clearHistory")
+}
+
