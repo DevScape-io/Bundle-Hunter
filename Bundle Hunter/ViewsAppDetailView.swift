@@ -615,7 +615,8 @@ struct AppDetailView: View {
                 appName: app.trackName,
                 artistName: app.artistName,
                 artworkUrl: app.artworkUrl512,
-                trackId: app.trackId
+                trackId: app.trackId,
+                kind: app.kind
             )
             modelContext.insert(favorite)
         }

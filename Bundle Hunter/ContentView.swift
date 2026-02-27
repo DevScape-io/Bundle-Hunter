@@ -59,7 +59,7 @@ struct ContentView: View {
             if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 // Show favorites or empty state
                 if !favorites.isEmpty {
-                    favoritesList
+                    filteredFavoritesList
                 } else {
                     EmptyStateView(
                         icon: "magnifyingglass",
@@ -70,6 +70,101 @@ struct ContentView: View {
             } else {
                 // Show search results when user is typing
                 searchResultsList
+            }
+        }
+    }
+    
+    // MARK: - Filtered Favorites List
+    
+    private var filteredFavoritesList: some View {
+        Group {
+            let filtered = filteredFavorites
+            
+            if filtered.isEmpty {
+                EmptyStateView(
+                    icon: "star.slash",
+                    title: "No Favorites for \(appStoreService.platformFilter.rawValue)",
+                    subtitle: "You don't have any \(appStoreService.platformFilter.rawValue) apps favorited yet"
+                )
+            } else {
+                List {
+                    ForEach(filtered) { favorite in
+                        Button(action: {
+                            loadFromFavorite(favorite)
+                        }) {
+                            HStack(spacing: 12) {
+                                AsyncImage(url: URL(string: favorite.artworkUrl)) { phase in
+                                    switch phase {
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 40, height: 40)
+                                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    default:
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(.quaternary)
+                                            .frame(width: 40, height: 40)
+                                    }
+                                }
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(favorite.appName)
+                                        .font(.system(size: 13, weight: .medium))
+                                        .lineLimit(1)
+                                    
+                                    Text(favorite.artistName)
+                                        .font(.system(size: 11))
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(1)
+                                    
+                                    Text(favorite.bundleId)
+                                        .font(.system(size: 10, design: .monospaced))
+                                        .foregroundStyle(.tertiary)
+                                        .lineLimit(1)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .onDelete(perform: deleteFavorites)
+                }
+                .listStyle(.sidebar)
+            }
+        }
+    }
+    
+    // MARK: - Filtered Favorites Computed Property
+    
+    private var filteredFavorites: [FavoriteApp] {
+        switch appStoreService.platformFilter {
+        case .all:
+            return favorites
+        case .iOS:
+            // Filter for iOS apps using the kind property
+            return favorites.filter { favorite in
+                if let kind = favorite.kind {
+                    // "software" is iOS, exclude "mac-software"
+                    return kind == "software"
+                } else {
+                    // Fallback to bundle ID heuristic for older favorites without kind
+                    return !favorite.bundleId.localizedCaseInsensitiveContains("mac") &&
+                           !favorite.bundleId.localizedCaseInsensitiveContains("macos")
+                }
+            }
+        case .macOS:
+            // Filter for macOS apps using the kind property
+            return favorites.filter { favorite in
+                if let kind = favorite.kind {
+                    // "mac-software" is macOS
+                    return kind == "mac-software"
+                } else {
+                    // Fallback to bundle ID heuristic for older favorites without kind
+                    return favorite.bundleId.localizedCaseInsensitiveContains("mac") ||
+                           favorite.bundleId.localizedCaseInsensitiveContains("macos")
+                }
             }
         }
     }
