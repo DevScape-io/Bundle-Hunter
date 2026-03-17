@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		877A48892F68FDBB00641CF2 /* QUICK_START.md in Resources */ = {isa = PBXBuildFile; fileRef = 877A48802F68FDBB00641CF2 /* QUICK_START.md */; };
 		877A488A2F68FDBB00641CF2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 877A48812F68FDBB00641CF2 /* README.md */; };
+		877A48C82F68FEC300641CF2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 877A48C72F68FEC300641CF2 /* LICENSE */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,7 @@
 		8734454B2F50A45100DB8F93 /* Bundle HunterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bundle HunterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		877A48802F68FDBB00641CF2 /* QUICK_START.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = QUICK_START.md; sourceTree = "<group>"; };
 		877A48812F68FDBB00641CF2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		877A48C72F68FEC300641CF2 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -88,6 +90,7 @@
 				873445442F50A45100DB8F93 /* Bundle HunterTests */,
 				8734454E2F50A45100DB8F93 /* Bundle HunterUITests */,
 				873445332F50A45000DB8F93 /* Products */,
+				877A48C72F68FEC300641CF2 /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
@@ -222,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				877A48892F68FDBB00641CF2 /* QUICK_START.md in Resources */,
+				877A48C82F68FEC300641CF2 /* LICENSE in Resources */,
 				877A488A2F68FDBB00641CF2 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
