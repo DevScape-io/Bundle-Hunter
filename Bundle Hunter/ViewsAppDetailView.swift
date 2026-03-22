@@ -22,6 +22,7 @@
 
 import SwiftUI
 import SwiftData
+import AppKit
 
 struct AppDetailView: View {
     let app: AppInfo
@@ -30,6 +31,11 @@ struct AppDetailView: View {
     
     @State private var copiedField: String?
     @State private var showingScreenshots = false
+    @State private var isDownloadingIcon = false
+    @State private var showingDownloadSuccess = false
+    @State private var downloadError: Error?
+    
+    private let iconService = IconDownloadService()
     
     var isFavorite: Bool {
         favorites.contains { $0.bundleId == app.bundleId }
@@ -120,11 +126,36 @@ struct AppDetailView: View {
         .background(Color(nsColor: .textBackgroundColor))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button(action: toggleFavorite) {
-                    Label(isFavorite ? "Remove from Favorites" : "Add to Favorites",
-                          systemImage: isFavorite ? "star.fill" : "star")
+                HStack(spacing: 8) {
+                    Button(action: { Task { await saveIcon() } }) {
+                        Label("Save Icon", systemImage: "arrow.down.circle")
+                    }
+                    .help("Save app icon as 512x512 PNG")
+                    .disabled(isDownloadingIcon)
+                    
+                    Button(action: toggleFavorite) {
+                        Label(isFavorite ? "Remove from Favorites" : "Add to Favorites",
+                              systemImage: isFavorite ? "star.fill" : "star")
+                    }
+                    .help(isFavorite ? "Remove from Favorites" : "Add to Favorites")
                 }
-                .help(isFavorite ? "Remove from Favorites" : "Add to Favorites")
+            }
+        }
+        .alert("Icon Saved Successfully", isPresented: $showingDownloadSuccess) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("The app icon has been saved as a 512x512 PNG file.")
+        }
+        .alert("Error Saving Icon", isPresented: .init(
+            get: { downloadError != nil },
+            set: { if !$0 { downloadError = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                downloadError = nil
+            }
+        } message: {
+            if let error = downloadError {
+                Text(error.localizedDescription)
             }
         }
     }
@@ -141,6 +172,12 @@ struct AppDetailView: View {
                         .frame(width: 128, height: 128)
                         .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                         .shadow(color: .black.opacity(0.15), radius: 12, y: 6)
+                        .contextMenu {
+                            Button(action: { Task { await saveIcon() } }) {
+                                Label("Save Icon as PNG (512x512)", systemImage: "arrow.down.circle")
+                            }
+                            .disabled(isDownloadingIcon)
+                        }
                 default:
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
                         .fill(Color(nsColor: .quaternaryLabelColor).opacity(0.3))
@@ -617,6 +654,21 @@ struct AppDetailView: View {
             if copiedField == field {
                 copiedField = nil
             }
+        }
+    }
+    
+    private func saveIcon() async {
+        isDownloadingIcon = true
+        defer { isDownloadingIcon = false }
+        
+        do {
+            _ = try await iconService.downloadAndSaveIcon(
+                from: app.artworkUrl512,
+                appName: app.trackName
+            )
+            showingDownloadSuccess = true
+        } catch {
+            downloadError = error
         }
     }
     
